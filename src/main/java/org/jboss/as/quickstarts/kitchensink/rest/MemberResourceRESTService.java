@@ -16,11 +16,7 @@
  */
 package org.jboss.as.quickstarts.kitchensink.rest;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 
 
@@ -61,16 +57,16 @@ public class MemberResourceRESTService {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Member> listAllMembers() {
-        return repository.findAllOrderedByName();
+        return repository.findAllByOrderByNameAsc();
     }
 
     @GetMapping(path = "/{id:[0-9][0-9]*}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Member lookupMemberById(@PathVariable("id") long id) {
-        Member member = repository.findById(id);
-        if (member == null) {
+        Optional<Member> member = repository.findById(id);
+        if (member.isEmpty()) {
             throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND);
         }
-        return member;
+        return member.get();
     }
 
     /**
@@ -144,13 +140,7 @@ public class MemberResourceRESTService {
      * @return True if the email already exists, and false otherwise
      */
     public boolean emailAlreadyExists(String email) {
-        Member member = null;
-        try {
-            member = repository.findByEmail(email);
-        } catch (javax.persistence.NoResultException e) {
-
-            // ignore
-        }
-        return member != null;
+        Optional<Member> member = repository.findByEmail(email);
+        return member.isPresent();
     }
 }

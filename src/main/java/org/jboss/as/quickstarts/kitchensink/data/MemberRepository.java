@@ -18,38 +18,43 @@ package org.jboss.as.quickstarts.kitchensink.data;
 
 
 import java.util.List;
+import java.util.Optional;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+
 import org.jboss.as.quickstarts.kitchensink.model.Member;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
-public class MemberRepository {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Autowired
-    private EntityManager em;
+    List<Member> findAllByOrderByNameAsc();
+    Optional<Member> findById(Long id);
+   Optional<Member> findByEmail(String email);
 
-    public Member findById(Long id) {
-        return em.find(Member.class, id);
-    }
 
-    public Member findByEmail(String email) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
-        Root<Member> member = criteria.from(Member.class);
-        criteria.select(member).where(cb.equal(member.get("email"), email));
-        return em.createQuery(criteria).getSingleResult();
-    }
 
-    public List<Member> findAllOrderedByName() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
-        Root<Member> member = criteria.from(Member.class);
-        criteria.select(member).orderBy(cb.asc(member.get("name")));
-        return em.createQuery(criteria).getResultList();
-    }
+//    @Autowired
+//    private EntityManager em;
+//
+//    public Member findById(Long id) {
+//        return em.find(Member.class, id);
+//    }
+//
+//    public Member findByEmail(String email) {
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
+//        Root<Member> member = criteria.from(Member.class);
+//        criteria.select(member).where(cb.equal(member.get("email"), email));
+//        return em.createQuery(criteria).getSingleResult();
+//    }
+//
+//    public List<Member> findAllOrderedByName() {
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
+//        Root<Member> member = criteria.from(Member.class);
+//        criteria.select(member).orderBy(cb.asc(member.get("name")));
+//        return em.createQuery(criteria).getResultList();
+//    }
 }

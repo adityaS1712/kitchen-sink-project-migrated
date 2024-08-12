@@ -49,11 +49,15 @@ public class MemberListProducer {
 
     @PostConstruct
     public void retrieveAllMembersOrderedByName() {
-        members = memberRepository.findAllOrderedByName();
+        members = memberRepository.findAllByOrderByNameAsc();
     }
 
     public void publishMemberListChangedEvent(Member member) {
         eventPublisher.publishEvent(new MemberListChangedEvent(this, member));
+    }
+
+    public List<Member> getMembers() {
+        return members;
     }
 
 }
