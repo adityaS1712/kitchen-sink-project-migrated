@@ -22,39 +22,15 @@ import java.util.Optional;
 
 
 import org.jboss.as.quickstarts.kitchensink.model.Member;
-import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, Long> {
-
+public interface MemberRepository extends MongoRepository<Member, String> {
     List<Member> findAllByOrderByNameAsc();
-    Optional<Member> findById(Long id);
-   Optional<Member> findByEmail(String email);
+    Optional<Member> findById(String id);
+    Optional<Member> findByEmail(String email);
 
-
-
-//    @Autowired
-//    private EntityManager em;
-//
-//    public Member findById(Long id) {
-//        return em.find(Member.class, id);
-//    }
-//
-//    public Member findByEmail(String email) {
-//        CriteriaBuilder cb = em.getCriteriaBuilder();
-//        CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
-//        Root<Member> member = criteria.from(Member.class);
-//        criteria.select(member).where(cb.equal(member.get("email"), email));
-//        return em.createQuery(criteria).getSingleResult();
-//    }
-//
-//    public List<Member> findAllOrderedByName() {
-//        CriteriaBuilder cb = em.getCriteriaBuilder();
-//        CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
-//        Root<Member> member = criteria.from(Member.class);
-//        criteria.select(member).orderBy(cb.asc(member.get("name")));
-//        return em.createQuery(criteria).getResultList();
-//    }
 }

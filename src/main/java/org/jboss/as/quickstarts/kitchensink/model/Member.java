@@ -17,51 +17,57 @@
 package org.jboss.as.quickstarts.kitchensink.model;
 
 
-import org.antlr.v4.runtime.misc.NotNull;
-import javax.validation.constraints.Pattern;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
-
-import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Size;
 
-@SuppressWarnings("serial")
-@Entity
-@XmlRootElement
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class Member implements Serializable {
+
+
+
+
+@Document(collection = "members")
+public class Member{
+
+    @Transient
+    public static final String SEQUENCE_NAME = "members_sequence";
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
     @NotNull
-    @Size(min = 1, max = 25)
+    @NotEmpty(message = "Name is required")
+    @Size(min = 1, max = 25, message = "Name must be between 1 and 25 characters")
     @Pattern(regexp = "[^0-9]*", message = "Must not contain numbers")
     private String name;
 
     @NotNull
-    @NotEmpty
-    @Email
+    @NotEmpty(message = "Email is required")
+    @Indexed(unique = true)
+    @Email(message = "Email should be valid")
     private String email;
 
     @NotNull
+    @NotEmpty(message = "Phone number is required")
+    @Pattern(regexp = "\\d{10}", message = "Phone number should be 10 digits")
     @Size(min = 10, max = 12)
     @Digits(fraction = 0, integer = 12)
-    @Column(name = "phone_number")
     private String phoneNumber;
 
-    public Long getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

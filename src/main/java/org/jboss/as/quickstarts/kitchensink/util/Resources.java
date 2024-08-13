@@ -16,11 +16,12 @@
  */
 package org.jboss.as.quickstarts.kitchensink.util;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.logging.Logger;
 
 

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <style>
+        body {
+            text-align: center;
+            padding: 50px;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f2b632;
+            animation: fall 5s infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+<body>
+<h1>Congratulations on your registration!</h1>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<div class="confetti"></div>
+<script>
+    const confettiElements = document.querySelectorAll('.confetti');
+    confettiElements.forEach((el, index) => {
+        el.style.left = `${Math.random() * 100}vw`;
+        el.style.animationDelay = `${Math.random() * 5}s`;
+    });
+</script>
+</body>
+</html>
