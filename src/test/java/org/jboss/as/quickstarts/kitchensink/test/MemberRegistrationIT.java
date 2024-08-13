@@ -11,14 +11,14 @@ import java.util.logging.Logger;
 //import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.jboss.as.quickstarts.kitchensink.model.Member;
-import org.jboss.as.quickstarts.kitchensink.service.MemberRegistration;
+import org.jboss.as.quickstarts.kitchensink.service.impl.MemberRegistrationImpl;
 
 //@ExtendWith(SpringExtension.class)
 //@SpringBootTest
 public class MemberRegistrationIT {
 
    // @Autowired
-    MemberRegistration memberRegistration;
+    MemberRegistrationImpl memberRegistration;
 
    // @Autowired
     Logger log;

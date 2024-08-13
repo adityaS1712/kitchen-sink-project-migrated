@@ -14,19 +14,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.as.quickstarts.kitchensink.rest;
+package org.jboss.as.quickstarts.kitchensink.service.impl;
 
 
+import org.jboss.as.quickstarts.kitchensink.model.Member;
 
-/**
- * A class extending {@link Application} and annotated with @ApplicationPath is the Jakarta EE "no XML" approach to activating
- * JAX-RS.
- * <p>
- * <p>
- * Resources are served relative to the servlet path specified in the {@link ApplicationPath} annotation.
- * </p>
- */
-//@ApplicationPath("/rest")
-//public class JaxRsActivator extends Application {
-//    /* class body intentionally left blank */
-//}
+
+import org.jboss.as.quickstarts.kitchensink.service.MemberRegistrationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Service;
+
+
+import java.util.logging.Logger;
+
+
+@Service
+public class MemberRegistrationImpl implements MemberRegistrationService {
+
+    @Autowired
+    private Logger log;
+
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+
+@Override
+    public void register(Member member) {
+        log.info("Registering" + member.getName());
+        mongoTemplate.save(member);
+    }
+
+}
