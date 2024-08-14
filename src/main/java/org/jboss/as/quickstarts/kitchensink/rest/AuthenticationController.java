@@ -1,8 +1,6 @@
-// AuthenticationController.java
+
 package org.jboss.as.quickstarts.kitchensink.rest;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.jboss.as.quickstarts.kitchensink.model.AuthRequest;
 import org.jboss.as.quickstarts.kitchensink.model.AuthResponse;
 import org.jboss.as.quickstarts.kitchensink.util.JwtUtil;
@@ -12,7 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
