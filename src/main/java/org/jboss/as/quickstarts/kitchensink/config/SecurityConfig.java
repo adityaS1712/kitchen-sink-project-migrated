@@ -1,7 +1,6 @@
 package org.jboss.as.quickstarts.kitchensink.config;
 
 import org.jboss.as.quickstarts.kitchensink.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,38 +25,6 @@ public class SecurityConfig {
     public JwtAuthenticationFilter jwtAuthenticationFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
         return new JwtAuthenticationFilter(jwtUtil, userDetailsService);
     }
-
-
-//    @Bean
-//    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-//        return new JwtAuthenticationFilter(jwtUtil, userDetailsService);
-//    }
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeRequests()
-//                .requestMatchers("/public/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .httpBasic(withDefaults());
-//        return http.build();
-//    }
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeRequests(auth -> auth
-//                        .requestMatchers("/auth/authenticate").permitAll()
-//                        .requestMatchers("/kitchensink/members/**").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .addFilterBefore(new jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .httpBasic(withDefaults());
-//        return http.build();
-//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {

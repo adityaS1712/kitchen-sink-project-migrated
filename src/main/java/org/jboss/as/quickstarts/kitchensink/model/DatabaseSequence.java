@@ -11,7 +11,7 @@ public class DatabaseSequence {
 
     private long seq;
 
-    // Getters and setters
+
     public String getId() {
         return id;
     }
