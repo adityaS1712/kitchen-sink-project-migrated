@@ -4,10 +4,10 @@ package org.jboss.as.quickstarts.kitchensink.rest;
 
 
 import jakarta.validation.Valid;
-import org.jboss.as.quickstarts.kitchensink.data.MemberRepository;
+
 import org.jboss.as.quickstarts.kitchensink.model.Member;
 import org.jboss.as.quickstarts.kitchensink.service.MemberService;
-import org.jboss.as.quickstarts.kitchensink.service.impl.MemberServiceImpl;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.PostConstruct;
 
 
-import java.util.List;
+
 import java.util.Optional;
 
 
@@ -59,21 +59,7 @@ public class MemberController {
 
     }
 
-    @GetMapping("/all")
-    public List<Member> getAllMembers() {
-        return memberService.getAllMembers();
-    }
 
-
-    @GetMapping("/{id}")
-    public Member getMemberById(@PathVariable String id) {
-        return memberService.getMemberById(id);
-    }
-
-  @GetMapping("/email/{email}")
-    public Optional<Member> getMemberByEmail(@PathVariable String email) {
-        return memberService.getMemberByEmail(email);
-    }
 
     @PostMapping("/register")
     public String register(@Valid @RequestBody Member newMember, BindingResult result, RedirectAttributes redirectAttributes) {

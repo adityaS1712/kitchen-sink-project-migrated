@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> auth
                         .requestMatchers("/auth/authenticate").permitAll()
                         .requestMatchers("/kitchensink/members/**").permitAll()
+                        .requestMatchers("/kitchensink/fetch/**").permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
