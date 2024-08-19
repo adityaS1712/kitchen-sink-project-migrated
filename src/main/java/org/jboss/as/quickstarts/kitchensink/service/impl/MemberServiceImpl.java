@@ -26,12 +26,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
-@Service
+@Service("memberService")
 @Validated
-public class MemberResourceRESTService implements MemberService {
+public class MemberServiceImpl implements MemberService {
 
 
-    private static final Logger log = LoggerFactory.getLogger(MemberResourceRESTService.class);
+    private static final Logger log = LoggerFactory.getLogger(MemberServiceImpl.class);
 
 
     @Autowired

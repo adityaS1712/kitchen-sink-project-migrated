@@ -8,7 +8,7 @@ import org.jboss.as.quickstarts.kitchensink.data.MemberRepository;
 import org.jboss.as.quickstarts.kitchensink.model.Member;
 import org.jboss.as.quickstarts.kitchensink.service.MemberRegistrationService;
 import org.jboss.as.quickstarts.kitchensink.service.SequenceGeneratorService;
-import org.jboss.as.quickstarts.kitchensink.service.impl.MemberResourceRESTService;
+import org.jboss.as.quickstarts.kitchensink.service.impl.MemberServiceImpl;
 import org.jboss.as.quickstarts.kitchensink.service.impl.MemberValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ public class MemberResourceRESTServiceTest {
     private MemberValidator memberValidator;
 
     @InjectMocks
-    private MemberResourceRESTService service;
+    private MemberServiceImpl service;
 
     @BeforeEach
     public void setUp() {

@@ -7,10 +7,11 @@ import jakarta.validation.Valid;
 import org.jboss.as.quickstarts.kitchensink.data.MemberRepository;
 import org.jboss.as.quickstarts.kitchensink.model.Member;
 import org.jboss.as.quickstarts.kitchensink.service.MemberService;
-import org.jboss.as.quickstarts.kitchensink.service.impl.MemberResourceRESTService;
+import org.jboss.as.quickstarts.kitchensink.service.impl.MemberServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -30,19 +31,12 @@ public class MemberController {
 
 
     private static final Logger log = LoggerFactory.getLogger(MemberController.class);
-    private final MemberResourceRESTService memberResourceRESTService;
-    private final MemberRepository memberRepository;
-
-    @Autowired
-    public MemberController(MemberRepository memberRepository, MemberResourceRESTService memberResourceRESTService) {
-        this.memberRepository = memberRepository;
-        this.memberResourceRESTService = memberResourceRESTService;
-    }
 
 
 
     @Autowired
-    private MemberService memberService;
+    @Qualifier("memberService")
+     MemberService memberService;
 
 
     private Member newMember;
@@ -103,6 +97,7 @@ public class MemberController {
             }
 
         } catch (DuplicateKeyException e) {
+            e.printStackTrace();
             String errorMessage = "Email already exists";
             redirectAttributes.addFlashAttribute("error", errorMessage);
             log.info("Error encountered while registering member: " + errorMessage);
