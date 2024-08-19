@@ -1,131 +1,102 @@
 package org.jboss.as.quickstarts.kitchensink.test.rest;
 
-import org.jboss.as.quickstarts.kitchensink.data.MemberRepository;
 import org.jboss.as.quickstarts.kitchensink.model.Member;
 import org.jboss.as.quickstarts.kitchensink.rest.MemberController;
 import org.jboss.as.quickstarts.kitchensink.service.MemberService;
-import org.jboss.as.quickstarts.kitchensink.service.impl.MemberResourceRESTService;
+import org.jboss.as.quickstarts.kitchensink.data.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.validation.ObjectError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.List;
-import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(MemberController.class)
 public class MemberControllerTest {
 
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @MockBean
-//    private MemberService memberService;
-//
-//    @MockBean
-//    private MemberRepository memberRepository;
-//
-//    @MockBean
-//    private MemberResourceRESTService memberResourceRESTService;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        MockitoAnnotations.openMocks(this);
-//    }
-//
-//    @Test
-//    public void testShowIndex() throws Exception {
-//        mockMvc.perform(get("/members/index"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("index"));
-//    }
-//
-//    @Test
-//    public void testGetAllMembers() throws Exception {
-//        List<Member> members = Arrays.asList(new Member(), new Member());
-//        when(memberService.getAllMembers()).thenReturn(members);
-//
-//        mockMvc.perform(get("/members/all"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-//    }
-//
-//    @Test
-//    public void testGetMemberById() throws Exception {
-//        Member member = new Member();
-//        when(memberService.getMemberById("1")).thenReturn(member);
-//
-//        mockMvc.perform(get("/members/1"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-//    }
-//
-//    @Test
-//    public void testGetMemberByEmail() throws Exception {
-//        Member member = new Member();
-//        when(memberService.getMemberByEmail("test@example.com")).thenReturn(Optional.of(member));
-//
-//        mockMvc.perform(get("/members/email/test@example.com"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-//    }
-//
-//    @Test
-//    public void testRegister_Success() throws Exception {
-//        String newMemberJson = "{\"name\":\"John Doe\",\"email\":\"john.doe@example.com\",\"phoneNumber\":\"1234567890\"}";
-//        Member member = new Member();
-//        member.setName("John Doe");
-//        member.setEmail("john.doe@example.com");
-//
-//        when(memberService.createMember(any(Member.class))).thenReturn(org.springframework.http.ResponseEntity.ok().build());
-//
-//        mockMvc.perform(post("/members/register")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(newMemberJson))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("success"));
-//    }
-//
-//    @Test
-//    public void testRegister_ValidationError() throws Exception {
-//        String newMemberJson = "{\"name\":\"\",\"email\":\"john.doe@example.com\",\"phoneNumber\":\"1234567890\"}";
-//
-//        mockMvc.perform(post("/members/register")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(newMemberJson))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(view().name("error"));
-//    }
-//
-//    @Test
-//    public void testRegister_DuplicateKeyException() throws Exception {
-//        String newMemberJson = "{\"name\":\"John Doe\",\"email\":\"john.doe@example.com\",\"phoneNumber\":\"1234567890\"}";
-//        Member member = new Member();
-//        member.setName("John Doe");
-//        member.setEmail("john.doe@example.com");
-//
-//        when(memberService.createMember(any(Member.class))).thenThrow(new org.springframework.dao.DuplicateKeyException("Email already exists"));
-//
-//        mockMvc.perform(post("/members/register")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(newMemberJson))
-//                .andExpect(status().isConflict())
-//                .andExpect(view().name("error"));
-//    }
+
+    @Autowired
+    private MemberController memberController;
+
+    @MockBean
+    private MemberService memberService;
+
+    @MockBean
+    private MemberRepository memberRepository;
+
+    @MockBean
+    private BindingResult bindingResult;
+
+    @MockBean
+    private RedirectAttributes redirectAttributes;
+
+    @BeforeEach
+    public void setUp() {
+        memberController = new MemberController();
+        ReflectionTestUtils.setField(memberController, "memberService", memberService);
+    }
+
+    @Test
+    public void testRegister_Success() {
+        Member member = new Member();
+        member.setEmail("test@example.com");
+        when(memberService.createMember(Mockito.any(Member.class))).thenReturn(new ResponseEntity<>(HttpStatus.OK));
+        when(bindingResult.hasErrors()).thenReturn(false);
+
+        String response = memberController.register(member, bindingResult, redirectAttributes);
+        assertEquals("success", response);
+    }
+
+    @Test
+    public void testRegister_ValidationError() {
+        when(bindingResult.hasErrors()).thenReturn(true);
+        when(bindingResult.getAllErrors()).thenReturn(List.of(new ObjectError("email", "Invalid email")));
+
+        Member member = new Member();
+        member.setEmail("invalid-email");
+
+        String response = memberController.register(member, bindingResult, redirectAttributes);
+        assertEquals("error", response);
+    }
+
+    @Test
+    public void testRegister_DuplicateEmail() {
+        when(memberService.createMember(Mockito.any(Member.class))).thenThrow(new DuplicateKeyException("Email already exists"));
+        when(bindingResult.hasErrors()).thenReturn(false);
+
+        Member member = new Member();
+        member.setEmail("test@example.com");
+
+        String response = memberController.register(member, bindingResult, redirectAttributes);
+        assertEquals("error", response);
+    }
+
+    @Test
+    public void testRegister_OtherException() {
+        when(memberService.createMember(Mockito.any(Member.class))).thenThrow(new RuntimeException("Unexpected error"));
+        when(bindingResult.hasErrors()).thenReturn(false);
+
+        Member member = new Member();
+        member.setEmail("test@example.com");
+
+        String response = memberController.register(member, bindingResult, redirectAttributes);
+        assertEquals("error", response);
+    }
 }
