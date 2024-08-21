@@ -15,7 +15,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.security.config.Customizer.withDefaults;
+
 
 @Configuration
 @EnableWebSecurity
@@ -35,18 +35,18 @@ public class SecurityConfig {
 
 
                         .requestMatchers("/", "/index.html").permitAll()
-                        // Allow access to static resources
+
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
-                        // Allow access to specific endpoints
+
                         .requestMatchers("/kitchensink/members/**").permitAll()
                         .requestMatchers("/kitchensink/fetch/**").permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-                //.httpBasic(withDefaults());
+
         return http.build();
     }
 
