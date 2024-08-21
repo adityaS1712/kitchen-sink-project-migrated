@@ -32,15 +32,26 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> auth
                         .requestMatchers("/auth/authenticate").permitAll()
+
+
+                        .requestMatchers("/", "/index.html").permitAll()
+                        // Allow access to static resources
+                        .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
+                        // Allow access to specific endpoints
                         .requestMatchers("/kitchensink/members/**").permitAll()
                         .requestMatchers("/kitchensink/fetch/**").permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(withDefaults());
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                //.httpBasic(withDefaults());
         return http.build();
     }
+
+
+
 
 
 
