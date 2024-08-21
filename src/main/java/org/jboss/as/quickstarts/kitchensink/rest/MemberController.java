@@ -60,43 +60,39 @@ public class MemberController {
     }
 
 
-
     @PostMapping("/register")
-    public String register(@Valid @RequestBody Member newMember, BindingResult result, RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public String register(@Valid @RequestBody Member newMember, BindingResult result) {
         if (result.hasErrors()) {
             String errorMessage = result.getAllErrors().get(0).getDefaultMessage();
-            redirectAttributes.addFlashAttribute("error", errorMessage);
             log.info("Error encountered while registering member: " + errorMessage);
             return "error";
         }
         try {
-            org.springframework.http.ResponseEntity<?> builder= memberService.createMember(newMember);
-            if(builder.getStatusCode().equals(org.springframework.http.HttpStatus.OK)){
-                redirectAttributes.addFlashAttribute("message", "Registration successful");
+            org.springframework.http.ResponseEntity<?> builder = memberService.createMember(newMember);
+            if (builder.getStatusCode().equals(org.springframework.http.HttpStatus.OK)) {
                 initNewMember();
                 return "success";
-            }else{
-                String errorMessage="Either something is null or email already exists";
-                redirectAttributes.addFlashAttribute("error", errorMessage);
+            } else {
+                String errorMessage = "Either something is null or email already exists";
+                //redirectAttributes.addFlashAttribute("error", errorMessage);
                 log.info("Error encountered while registering member: " + errorMessage);
                 return "error";
             }
-
         } catch (DuplicateKeyException e) {
             e.printStackTrace();
             String errorMessage = "Email already exists";
-            redirectAttributes.addFlashAttribute("error", errorMessage);
             log.info("Error encountered while registering member: " + errorMessage);
             return "error";
         } catch (Exception e) {
             e.printStackTrace();
             String errorMessage = getRootErrorMessage(e);
-            redirectAttributes.addFlashAttribute("error", errorMessage);
             log.info("Error encountered while registering member: " + errorMessage);
             return "error";
         }
-
     }
+
+
 
 
 

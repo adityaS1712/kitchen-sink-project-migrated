@@ -78,7 +78,7 @@ public class MemberControllerTest {
         when(memberService.createMember(Mockito.any(Member.class))).thenReturn(new ResponseEntity<>(HttpStatus.OK));
         when(bindingResult.hasErrors()).thenReturn(false);
 
-        String response = memberController.register(member, bindingResult, redirectAttributes);
+        String response = memberController.register(member, bindingResult);
         assertEquals("success", response);
     }
 
@@ -90,7 +90,7 @@ public class MemberControllerTest {
         Member member = new Member();
         member.setEmail("invalid-email");
 
-        String response = memberController.register(member, bindingResult, redirectAttributes);
+        String response = memberController.register(member, bindingResult);
         assertEquals("error", response);
     }
 
@@ -102,7 +102,7 @@ public class MemberControllerTest {
         Member member = new Member();
         member.setEmail("test@example.com");
 
-        String response = memberController.register(member, bindingResult, redirectAttributes);
+        String response = memberController.register(member, bindingResult);
         assertEquals("error", response);
     }
 
@@ -114,7 +114,7 @@ public class MemberControllerTest {
         Member member = new Member();
         member.setEmail("test@example.com");
 
-        String response = memberController.register(member, bindingResult, redirectAttributes);
+        String response = memberController.register(member, bindingResult);
         assertEquals("error", response);
     }
 }
