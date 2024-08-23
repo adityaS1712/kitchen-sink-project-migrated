@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitchen Sink App</title>
-    <!-- Reference the CSS file correctly -->
     <link rel="stylesheet" type="text/css" href="/kitchensink/css/styles.css">
 </head>
 <body>
 <div class="container">
-    <h2>Login</h2>
+    <img src="/kitchensink/images/logo.png" alt="Logo" class="logo">
+    <h2 id="loginHeading">Login</h2>
     <form id="loginForm">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
@@ -18,23 +18,40 @@
         <button type="submit">Login</button>
     </form>
 
-    <div id="registrationSection" style="display:none;">
-        <h2>Register Member</h2>
-        <form id="registrationForm">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="phoneNumber">Phone Number:</label>
-            <input type="text" id="phoneNumber" name="phoneNumber" required>
-            <button type="submit">Register</button>
-        </form>
+    <div id="mainContent" style="display:none;">
+        <div id="registrationSection">
+            <h2>Register Member</h2>
+            <form id="registrationForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" required>
+                <button type="submit">Register</button>
+                <div id="registrationMessage" class="message"></div>
+            </form>
+        </div>
+
+        <button id="toggleFetchSectionButton">View Member Details</button>
+        <div id="fetchSection" style="display:none;">
+            <h2>Member Details</h2>
+            <div id="tableContainer"></div>
+            <button id="fetchAllButton">Fetch All Members</button>
+            <div class="input-group">
+                <input type="text" id="memberId" placeholder="Enter Member ID">
+                <button id="fetchByIdButton">Fetch Member by ID</button>
+            </div>
+            <div class="input-group">
+                <input type="text" id="memberEmail" placeholder="Enter Member Email">
+                <button id="fetchByEmailButton">Fetch Member by Email</button>
+            </div>
+        </div>
     </div>
 
     <div id="messageSection"></div>
 </div>
 
-<!-- Reference the JavaScript file correctly -->
 <script type="text/javascript" src="/kitchensink/js/app.js"></script>
 </body>
 </html>
